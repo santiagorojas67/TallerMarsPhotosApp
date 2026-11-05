@@ -10,8 +10,8 @@ import dev.archfoundry.marsphotosapp.ui.screen.MarsViewModel
 
 @Composable
 fun MarsPhotosApp() {
-    val viewModel: MarsViewModel = viewModel()
-    Scaffold() { innerPadding ->
+    val viewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
+    Scaffold { innerPadding ->
         HomeScreen(
             marsUiState = viewModel.marsUiState,
             modifier = Modifier.padding(innerPadding)
