@@ -8,18 +8,22 @@ import androidx.lifecycle.viewModelScope
 import dev.archfoundry.marsphotosapp.network.MarsApi
 import kotlinx.coroutines.launch
 
-
-class MarsViewModel : ViewModel()  {
-    var marsUiState: String by mutableStateOf("Bienvenidos a esta App")
+class MarsViewModel : ViewModel() {
+    var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
         private set
 
     init {
         getMarsPhotos()
     }
+
     fun getMarsPhotos() {
         viewModelScope.launch {
-            val result = MarsApi.retrofitService.getPhotos()
-            marsUiState = result
+            marsUiState = MarsUiState.Loading
+            marsUiState = try {
+                MarsUiState.Success(MarsApi.retrofitService.getPhotos())
+            } catch (_: Exception) {
+                MarsUiState.Error
+            }
         }
     }
 }
